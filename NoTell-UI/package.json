@@ -1,0 +1,18 @@
+{
+  "name": "notell-ui",
+  "version": "1.0.0",
+  "description": "No Tell Motel UI with React, Bootstrap and Material UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "exercise"
+  ],
+  "author": "Michal Nawrocki",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "bootstrap": "^4.6.0"
+  }
+}
