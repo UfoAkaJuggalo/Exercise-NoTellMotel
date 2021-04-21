@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "kCtOEbWefteW5+OnHLRfvQUSomJlX6jPpc+Ha8H0sYgRog4cYBdmjobD32kXZDWKaX9hNJIYYpA0M3Wz8k0mHA==",
+  "success": true,
+  "projectFilePath": "D:\\My Documents\\Visual Studio 2019\\Repos\\Exercise-NoTellMotel\\NoTell-API\\NoTell-API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
