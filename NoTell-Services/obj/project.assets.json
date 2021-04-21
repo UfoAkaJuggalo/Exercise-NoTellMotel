@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {}
+    "net5.0": {
+      "NoTell-DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/NoTell-DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NoTell-DAL.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "NoTell-DAL/1.0.0": {
+      "type": "project",
+      "path": "../NoTell-DAL/NoTell-DAL.csproj",
+      "msbuildProject": "../NoTell-DAL/NoTell-DAL.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net5.0": []
+    "net5.0": [
+      "NoTell-DAL >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\v25.HOFMANN\\.nuget\\packages\\": {}
@@ -33,7 +52,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\My Documents\\Visual Studio 2019\\Repos\\Exercise-NoTellMotel\\NoTell-DAL\\NoTell-DAL.csproj": {
+              "projectPath": "D:\\My Documents\\Visual Studio 2019\\Repos\\Exercise-NoTellMotel\\NoTell-DAL\\NoTell-DAL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

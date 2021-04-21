@@ -10,4 +10,8 @@
     <Folder Include="Implementations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NoTell-DAL\NoTell-DAL.csproj" />
+  </ItemGroup>
+
 </Project>

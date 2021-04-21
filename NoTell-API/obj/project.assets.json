@@ -76,9 +76,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "NoTell-DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/NoTell-DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NoTell-DAL.dll": {}
+        }
+      },
       "NoTell-Services/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "NoTell-DAL": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/NoTell-Services.dll": {}
         },
@@ -195,6 +208,11 @@
         "swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "NoTell-DAL/1.0.0": {
+      "type": "project",
+      "path": "../NoTell-DAL/NoTell-DAL.csproj",
+      "msbuildProject": "../NoTell-DAL/NoTell-DAL.csproj"
     },
     "NoTell-Services/1.0.0": {
       "type": "project",
