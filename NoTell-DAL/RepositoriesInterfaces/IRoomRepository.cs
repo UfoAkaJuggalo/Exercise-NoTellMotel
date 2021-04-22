@@ -5,7 +5,7 @@ namespace NoTell_DAL.RepositoriesInterfaces
 {
     public interface IRoomRepository
     {
-        int AddRoom(int RoomNumber, int bedrooms);
+        int AddRoom(int roomNumber, int bedrooms);
         Room GetRoomById(int roomId);
         IEnumerable<Room> GetRoomsByBedrooms(int numberOfBedrooms);
     }
