@@ -12,5 +12,6 @@ namespace NoTell_DAL.RepositoriesInterfaces
                                int roomId);
         Reservation GetReservationById(int reservationId);
         IEnumerable<Reservation> GetReservationList();
+        bool IsRoomAvalibileForDateRange(int roomId, DateTime dateFrom, DateTime dateTo);
     }
 }
