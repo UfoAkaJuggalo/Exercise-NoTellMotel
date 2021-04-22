@@ -12,6 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NoTell_DAL.Entities;
+using NoTell_DAL.InMemoryRepositories;
+using NoTell_DAL.RepositoriesInterfaces;
+using NoTell_Services.Interfaces;
+using NoTell_Services.Services;
 
 namespace NoTell_API
 {
@@ -27,7 +32,10 @@ namespace NoTell_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IGuestRepository, GuestInMemoryRepository>();
 
+            services.AddScoped<IGuestService, GuestService>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
