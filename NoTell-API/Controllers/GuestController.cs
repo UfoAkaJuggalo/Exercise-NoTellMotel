@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NoTell_API.ViewModel;
 using NoTell_Services.Interfaces;
+using NoTell_Services.ViewModel;
 
 namespace NoTell_API.Controllers
 {

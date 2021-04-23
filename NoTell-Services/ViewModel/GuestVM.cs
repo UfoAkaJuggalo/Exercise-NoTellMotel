@@ -1,4 +1,4 @@
-﻿namespace NoTell_API.ViewModel
+﻿namespace NoTell_Services.ViewModel
 {
     public class GuestVM
     {
