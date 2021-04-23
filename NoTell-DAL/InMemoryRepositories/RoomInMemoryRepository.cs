@@ -40,5 +40,6 @@ namespace NoTell_DAL.InMemoryRepositories
         public Room GetRoomById(int roomId) => _rooms.FirstOrDefault(f => f.RoomId == roomId);
 
         public IEnumerable<Room> GetRoomsByBedrooms(int numberOfBedrooms) => _rooms.Where(x => x.NumberOfBedrooms == numberOfBedrooms);
+        public IEnumerable<Room> GetAllRooms() => _rooms;
     }
 }
