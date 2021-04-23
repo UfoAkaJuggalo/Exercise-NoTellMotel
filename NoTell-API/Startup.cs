@@ -33,8 +33,10 @@ namespace NoTell_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGuestRepository, GuestInMemoryRepository>();
+            services.AddSingleton<IRoomRepository, RoomInMemoryRepository>();
 
             services.AddScoped<IGuestService, GuestService>();
+            services.AddScoped<IRoomService, RoomService>();
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
