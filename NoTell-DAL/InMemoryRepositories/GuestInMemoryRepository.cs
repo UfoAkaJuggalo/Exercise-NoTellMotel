@@ -23,7 +23,7 @@ namespace NoTell_DAL.InMemoryRepositories
                 Name = name,
                 LastName = lastName,
                 Phone = phone,
-                GuestId = _idCounter++
+                GuestId = ++_idCounter
             });
 
             return _idCounter;

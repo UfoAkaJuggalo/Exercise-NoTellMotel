@@ -25,7 +25,7 @@ namespace NoTell_DAL.InMemoryRepositories
                 ReservationTo = reservationTo,
                 GuestId = guestId,
                 RoomId = roomId,
-                ReservationId = _idCounter++
+                ReservationId = ++_idCounter
             });
 
             return _idCounter;
