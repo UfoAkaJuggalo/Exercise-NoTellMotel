@@ -18,6 +18,7 @@ namespace NoTell_API.Controllers
         }
 
         [HttpGet]
+        [Route("get/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RoomVM))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
         public IActionResult GetById(int id)
@@ -28,7 +29,8 @@ namespace NoTell_API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RoomVM))]
+        [Route("getByBedrooms/{bedroomsNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RoomVM>))]
         public IEnumerable<RoomVM> GetByBedroomsNumber(int bedroomsNumber) => _roomService.GetRoomsByBedrooms(bedroomsNumber);
     }
 }
