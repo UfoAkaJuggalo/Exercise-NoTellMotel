@@ -11,15 +11,29 @@ namespace NoTell_Services.Services
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly IGuestRepository _guestRepository; 
 
-        public ReservationService(IRoomRepository roomRepository, IReservationRepository reservationRepository)
+        public ReservationService(IRoomRepository roomRepository, IReservationRepository reservationRepository, IGuestRepository guestRepository)
         {
             _roomRepository = roomRepository;
             _reservationRepository = reservationRepository;
+            _guestRepository = guestRepository;
         }
 
         public int AddReservation(DateTime reservationFrom, DateTime reservationTo, int guestId, int roomId) =>
             _reservationRepository.AddReservation(reservationFrom, reservationTo, guestId, roomId);
+
+        public int AddReservationGuest(DateTime reservationFrom, DateTime reservationTo, int roomId, string name,
+                                       string lastName, string phone)
+        {
+            int guestId;
+            var guest = _guestRepository.getGuestByNamePhone(name, lastName, phone);
+
+            guestId = guest is null ? _guestRepository.AddGuest(name, lastName, phone) : guest.GuestId;
+
+            return _reservationRepository.AddReservation(reservationFrom, reservationTo, guestId, roomId);
+
+        }
 
         public void DeleteReservation(int reservationId) => _reservationRepository.DeleteReservation(reservationId);
 

@@ -7,6 +7,7 @@ namespace NoTell_Services.Interfaces
     public interface IReservationService
     {
         int AddReservation(DateTime reservationFrom, DateTime reservationTo, int guestId, int roomId);
+        int AddReservationGuest(DateTime reservationFrom, DateTime reservationTo, int roomId, string name, string lastName, string phone);
         void DeleteReservation(int reservationId);
         ReservationVM GetReservationById(int reservationId);
         IEnumerable<ReservationVM> GetReservationList();
