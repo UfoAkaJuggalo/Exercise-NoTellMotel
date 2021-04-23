@@ -31,7 +31,7 @@ namespace NoTell_DAL.InMemoryRepositories
             {
                 RoomNumber = roomNumber,
                 NumberOfBedrooms = bedrooms,
-                RoomId = _idCounter++
+                RoomId = ++_idCounter
             });
 
             return _idCounter;
