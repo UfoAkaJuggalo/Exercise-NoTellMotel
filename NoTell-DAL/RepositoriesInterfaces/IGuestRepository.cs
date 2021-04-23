@@ -6,5 +6,6 @@ namespace NoTell_DAL.RepositoriesInterfaces
     {
         int AddGuest(string name, string lastName, string phone);
         Guest GetGuestById(int guestId);
+        Guest getGuestByNamePhone(string name, string lastName, string phone);
     }
 }
