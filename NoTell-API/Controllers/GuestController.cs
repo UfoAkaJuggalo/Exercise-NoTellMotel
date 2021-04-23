@@ -17,6 +17,7 @@ namespace NoTell_API.Controllers
         }
 
         [HttpPost]
+        [Route("add")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
         public IActionResult Add(AddGuestVM model)
@@ -27,6 +28,7 @@ namespace NoTell_API.Controllers
         }
 
         [HttpGet]
+        [Route("get/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GuestVM))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
         public IActionResult Get(int id)

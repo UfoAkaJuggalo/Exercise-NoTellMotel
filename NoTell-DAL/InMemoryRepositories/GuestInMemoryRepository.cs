@@ -33,5 +33,8 @@ namespace NoTell_DAL.InMemoryRepositories
         {
             return _guests.FirstOrDefault(f => f.GuestId == guestId);
         }
+
+        public Guest getGuestByNamePhone(string name, string lastName, string phone) =>
+            _guests.SingleOrDefault(x => x.Name == name && x.LastName == lastName && x.Phone == phone);
     }
 }
