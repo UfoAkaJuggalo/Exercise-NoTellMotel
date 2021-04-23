@@ -23,10 +23,7 @@ namespace NoTell_API.Controllers
         {
             var result = _guestService.AddGuest(model.Name, model.LastName, model.Phone);
 
-            if (result > 0)
-                return StatusCode(StatusCodes.Status201Created, result);
-            
-            return StatusCode(StatusCodes.Status500InternalServerError, "Unable to add a new guest");
+            return result > 0 ? StatusCode(StatusCodes.Status201Created, result) : StatusCode(StatusCodes.Status500InternalServerError, "Unable to add a new guest");
         }
 
         [HttpGet]
@@ -36,10 +33,7 @@ namespace NoTell_API.Controllers
         {
             var result = _guestService.GetGuestById(id);
 
-            if (result is not null)
-                return Ok(result);
-
-            return StatusCode(StatusCodes.Status500InternalServerError, "Guest not found."); 
+            return result is not null ? Ok(result) : StatusCode(StatusCodes.Status500InternalServerError, "Guest not found.");
         }
     }
 }
