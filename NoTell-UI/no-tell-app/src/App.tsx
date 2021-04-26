@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Form, Row} from "react-bootstrap";
 import {
     Button, FormControl,
-    FormControlLabel, FormLabel, Radio,
+    FormControlLabel, FormHelperText, FormLabel, Input, InputLabel, Radio,
     RadioGroup,
     Step,
     StepContent,
@@ -12,7 +12,7 @@ import {
     Stepper,
     TextField
 } from "@material-ui/core";
-import {AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
+import {AddGuestVM, AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
 
 const {postReservationService2} = ReservationService;
 OpenAPI.BASE = "https://localhost:44360";
@@ -28,6 +28,9 @@ const App: React.FC = () =>
     const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm'];
     const [activeStep, setActiveStep] = React.useState(0);
     const [bedroomsNum, setbedroomsNum] = useState<number>(0);
+    const [guest, setguest] = useState<AddGuestVM>( (
+        {name: '', lastName: '', phone: ''}
+    ));
 
     const [availableRoomType, setavailableRoomType] = useState<Array<number>>(
         []
@@ -84,6 +87,29 @@ const App: React.FC = () =>
         setdateTo(date);
     };
 
+    const handleFormChange = (event: any) =>
+    {
+        if(guest) {
+            const idFiels = event.target.id;
+            const value = event.target.value;
+            var tempGuest = guest;
+
+            switch (idFiels) {
+                case "my-name":
+                    tempGuest.name = value;
+                    break;
+                case "my-lastName":
+                    tempGuest.lastName = value;
+                    break;
+                case "my-phone":
+                    tempGuest.phone = value;
+                    break;
+            }
+
+            setguest(tempGuest);
+        }
+    }
+
     const checkAvailableRooms = () =>
     {
         if (dateTo > dateFrom)
@@ -113,6 +139,14 @@ const App: React.FC = () =>
                     console.log("error: ", err);
                 })
         }
+    }
+
+    const validateForm = ():boolean =>
+    {
+        if(guest && guest.name && guest.lastName && guest.phone)
+            return guest.name?.length > 0 && guest.lastName.length > 0 && guest.phone.length > 0;
+
+        return false;
     }
 
     const getStepContent = (step: number): JSX.Element =>
@@ -171,7 +205,28 @@ const App: React.FC = () =>
                 )
             case 2:
                 return (
-                    <p>Step 3</p>
+                    <Form>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-name">First name</InputLabel>
+                            <Input id="my-name" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-lastName">Last name</InputLabel>
+                            <Input id="my-lastName" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-phone">Phone number</InputLabel>
+                            <Input id="my-phone" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <div>
+                            <Button variant="contained" onClick={handleBack}>
+                                Back
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={handleNext} className="mx-4" disabled={validateForm()}>
+                                Next
+                            </Button>
+                        </div>
+                    </Form>
                 );
             case 3:
                 return (
