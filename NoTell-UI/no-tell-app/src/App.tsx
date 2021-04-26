@@ -79,6 +79,10 @@ const App: React.FC = () =>
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
+    const handleReset = () => {
+        setActiveStep(0);
+    };
+
     const handleDateFromChange = (event: any | null) => {
         const date = new Date(event.target.value);
         setdateFrom(date);
@@ -270,6 +274,14 @@ const App: React.FC = () =>
                         </div>
                     </div>
                 );
+            case 4:
+                return (
+                    <>
+                        <h4 className="text-center">Success!</h4>
+                        <Button color="primary" variant="contained" onClick={handleReset}>
+                            Reset
+                        </Button>
+                    </>
                 );
         }
         return (<p>Unknown step</p>);
