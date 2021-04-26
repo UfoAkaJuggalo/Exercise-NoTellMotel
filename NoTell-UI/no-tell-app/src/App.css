@@ -13,11 +13,6 @@ header h4 {
     margin-block-start: .5em;
 }
 
-.MuiSvgIcon-root{
-    width: 3rem!important;
-    height: 3rem!important;
-}
-
 .MuiStepLabel-label{
     font-size: 1.5rem!important;
 }
