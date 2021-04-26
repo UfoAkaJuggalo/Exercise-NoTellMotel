@@ -3,8 +3,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Col, Container, Row} from "react-bootstrap";
 import {
-    Button,
-    FormControlLabel, Radio,
+    Button, FormControl,
+    FormControlLabel, FormLabel, Radio,
     RadioGroup,
     Step,
     StepContent,
@@ -61,6 +61,19 @@ const App: React.FC = () =>
 
         return convertDateToString(date);
     }
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setbedroomsNum(Number(event.target.value));
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
     const handleDateFromChange = (event: any | null) => {
         const date = new Date(event.target.value);
         setdateFrom(date);
@@ -92,7 +105,8 @@ const App: React.FC = () =>
 
                     setavailableRooms(result);
                     setavailableRoomType(tempArray);
-                    setActiveStep((step) => step + 1);
+                    setbedroomsNum(0);
+                    handleNext();
 
                 })
                 .catch((err)=>{
@@ -136,8 +150,25 @@ const App: React.FC = () =>
                 );
             case 1:
                 return (
-                    <p>Step 2</p>
-                );
+                    <>
+                    <FormControl component="fieldset" className={"my-3 mx-2"}>
+                        <FormLabel component="legend">Choose number of bedrooms</FormLabel>
+                        <RadioGroup aria-label="Choose number of bedrooms" name="bedroomsNum" value={bedroomsNum} onChange={handleRadioChange}>
+                            {availableRoomType.map(type=>(
+                                <FormControlLabel value={type} control={<Radio />} label={type} />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                    <div>
+                        <Button variant="contained" onClick={handleBack}>
+                            Back
+                        </Button>
+                        <Button color="primary" variant="contained" onClick={handleNext} className="mx-4" disabled={bedroomsNum == 0}>
+                            Next
+                        </Button>
+                    </div>
+                    </>
+                )
             case 2:
                 return (
                     <p>Step 3</p>
