@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Form, Row} from "react-bootstrap";
 import {
-    Button,
-    FormControlLabel, Radio,
+    Button, FormControl,
+    FormControlLabel, FormHelperText, FormLabel, Input, InputLabel, Radio,
     RadioGroup,
     Step,
     StepContent,
@@ -12,7 +12,7 @@ import {
     Stepper,
     TextField
 } from "@material-ui/core";
-import {AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
+import {AddGuestVM, AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
 
 const {postReservationService2} = ReservationService;
 OpenAPI.BASE = "https://localhost:44360";
@@ -26,10 +26,15 @@ const App: React.FC = () =>
 {
 
     const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm'];
-    let availableRoomType: Array<number> = [];
     const [activeStep, setActiveStep] = React.useState(0);
     const [bedroomsNum, setbedroomsNum] = useState<number>(0);
+    const [guest, setguest] = useState<AddGuestVM>( (
+        {name: '', lastName: '', phone: ''}
+    ));
 
+    const [availableRoomType, setavailableRoomType] = useState<Array<number>>(
+        []
+    );
     const [availableRooms, setavailableRooms] = useState<Array<RoomVM>>(
         []
     );
@@ -46,7 +51,6 @@ const App: React.FC = () =>
         }
     );
 
-
     const convertDateToString = (date: Date): string =>
         [date.getFullYear(), date.getMonth() + 1, date.getDate()]
             .map(n => n < 10 ? `0${n}` : `${n}`).join('-')
@@ -60,6 +64,19 @@ const App: React.FC = () =>
 
         return convertDateToString(date);
     }
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setbedroomsNum(Number(event.target.value));
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
     const handleDateFromChange = (event: any | null) => {
         const date = new Date(event.target.value);
         setdateFrom(date);
@@ -69,6 +86,29 @@ const App: React.FC = () =>
         const date = new Date(event.target.value);
         setdateTo(date);
     };
+
+    const handleFormChange = (event: any) =>
+    {
+        if(guest) {
+            const idFiels = event.target.id;
+            const value = event.target.value;
+            var tempGuest = guest;
+
+            switch (idFiels) {
+                case "my-name":
+                    tempGuest.name = value;
+                    break;
+                case "my-lastName":
+                    tempGuest.lastName = value;
+                    break;
+                case "my-phone":
+                    tempGuest.phone = value;
+                    break;
+            }
+
+            setguest(tempGuest);
+        }
+    }
 
     const checkAvailableRooms = () =>
     {
@@ -81,22 +121,32 @@ const App: React.FC = () =>
 
             postReservationService2(sendData)
                 .then((result) => {
-                    availableRoomType = [];
+                    var tempArray:Array<number> = [];
 
                     result.forEach(val =>
                     {
-                        if (val.numberOfBedrooms != undefined && availableRoomType.indexOf(val.numberOfBedrooms) < 0)
-                            availableRoomType.push(val.numberOfBedrooms);
+                        if (val.numberOfBedrooms != undefined && tempArray.indexOf(val.numberOfBedrooms) < 0)
+                            tempArray.push(val.numberOfBedrooms);
                     });
 
                     setavailableRooms(result);
-                    setActiveStep((step) => step + 1);
+                    setavailableRoomType(tempArray);
+                    setbedroomsNum(0);
+                    handleNext();
 
                 })
                 .catch((err)=>{
                     console.log("error: ", err);
                 })
         }
+    }
+
+    const validateForm = ():boolean =>
+    {
+        if(guest && guest.name && guest.lastName && guest.phone)
+            return guest.name?.length > 0 && guest.lastName.length > 0 && guest.phone.length > 0;
+
+        return false;
     }
 
     const getStepContent = (step: number): JSX.Element =>
@@ -134,11 +184,49 @@ const App: React.FC = () =>
                 );
             case 1:
                 return (
-                    <p>Step 2</p>
-                );
+                    <>
+                    <FormControl component="fieldset" className={"my-3 mx-2"}>
+                        <FormLabel component="legend">Choose number of bedrooms</FormLabel>
+                        <RadioGroup aria-label="Choose number of bedrooms" name="bedroomsNum" value={bedroomsNum} onChange={handleRadioChange}>
+                            {availableRoomType.map(type=>(
+                                <FormControlLabel value={type} control={<Radio />} label={type} />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                    <div>
+                        <Button variant="contained" onClick={handleBack}>
+                            Back
+                        </Button>
+                        <Button color="primary" variant="contained" onClick={handleNext} className="mx-4" disabled={bedroomsNum == 0}>
+                            Next
+                        </Button>
+                    </div>
+                    </>
+                )
             case 2:
                 return (
-                    <p>Step 3</p>
+                    <Form>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-name">First name</InputLabel>
+                            <Input id="my-name" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-lastName">Last name</InputLabel>
+                            <Input id="my-lastName" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <FormControl className="mx-4">
+                            <InputLabel htmlFor="my-phone">Phone number</InputLabel>
+                            <Input id="my-phone" aria-describedby="my-helper-text" onChange={handleFormChange}/>
+                        </FormControl>
+                        <div>
+                            <Button variant="contained" onClick={handleBack}>
+                                Back
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={handleNext} className="mx-4" disabled={validateForm()}>
+                                Next
+                            </Button>
+                        </div>
+                    </Form>
                 );
             case 3:
                 return (
