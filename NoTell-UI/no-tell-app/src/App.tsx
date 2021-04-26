@@ -26,10 +26,12 @@ const App: React.FC = () =>
 {
 
     const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm'];
-    let availableRoomType: Array<number> = [];
     const [activeStep, setActiveStep] = React.useState(0);
     const [bedroomsNum, setbedroomsNum] = useState<number>(0);
 
+    const [availableRoomType, setavailableRoomType] = useState<Array<number>>(
+        []
+    );
     const [availableRooms, setavailableRooms] = useState<Array<RoomVM>>(
         []
     );
@@ -45,7 +47,6 @@ const App: React.FC = () =>
             return date;
         }
     );
-
 
     const convertDateToString = (date: Date): string =>
         [date.getFullYear(), date.getMonth() + 1, date.getDate()]
@@ -81,15 +82,16 @@ const App: React.FC = () =>
 
             postReservationService2(sendData)
                 .then((result) => {
-                    availableRoomType = [];
+                    var tempArray:Array<number> = [];
 
                     result.forEach(val =>
                     {
-                        if (val.numberOfBedrooms != undefined && availableRoomType.indexOf(val.numberOfBedrooms) < 0)
-                            availableRoomType.push(val.numberOfBedrooms);
+                        if (val.numberOfBedrooms != undefined && tempArray.indexOf(val.numberOfBedrooms) < 0)
+                            tempArray.push(val.numberOfBedrooms);
                     });
 
                     setavailableRooms(result);
+                    setavailableRoomType(tempArray);
                     setActiveStep((step) => step + 1);
 
                 })
