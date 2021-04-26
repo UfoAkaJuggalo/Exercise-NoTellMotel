@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {
     Button, FormControl,
-    FormControlLabel, FormHelperText, FormLabel, Input, InputLabel, Radio,
+    FormControlLabel, FormLabel, Input, InputLabel, Radio,
     RadioGroup,
     Step,
     StepContent,
@@ -12,15 +12,22 @@ import {
     Stepper,
     TextField
 } from "@material-ui/core";
-import {AddGuestVM, AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
+import {
+    AddGuestVM,
+    AddReservationGuestVM,
+    AvailableRoomsForDataRangeVM,
+    OpenAPI,
+    ReservationService,
+    RoomVM
+} from "./gen";
 
-const {postReservationService2} = ReservationService;
+const {postReservationService2, postReservationService1} = ReservationService;
 OpenAPI.BASE = "https://localhost:44360";
 
 const App: React.FC = () =>
 {
 
-    const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm'];
+    const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm', 'Success'];
     const [activeStep, setActiveStep] = React.useState(0);
     const [bedroomsNum, setbedroomsNum] = useState<number>(0);
     const [guest, setguest] = useState<AddGuestVM>( (
@@ -144,6 +151,27 @@ const App: React.FC = () =>
         return false;
     }
 
+    const sendReservation = () =>
+    {
+        var reservation: AddReservationGuestVM;
+        const room = availableRooms.find(f => f.numberOfBedrooms == bedroomsNum);
+
+        if (room) {
+            reservation = {
+                roomId: room.roomId,
+                reservationFrom: convertDateToString(dateFrom),
+                reservationTo: convertDateToString(dateTo),
+                name: guest.name,
+                lastName: guest.lastName,
+                phone: guest.phone
+            };
+
+            postReservationService1(reservation)
+                .then(() => handleNext())
+                .catch((err)=> console.log("Error: ", err));
+        }
+    }
+
     const getStepContent = (step: number): JSX.Element =>
     {
         switch (step) {
@@ -225,7 +253,23 @@ const App: React.FC = () =>
                 );
             case 3:
                 return (
-                    <p>Step 4</p>
+                    <div className="mx-2 mt-2">
+                        <h5>Reservation from: {convertDateToString(dateFrom)} to: {convertDateToString(dateTo)}</h5>
+                        <h5 className="mt-3 mb-4">
+                            <span className="mr-4">First name: {guest.name}</span>
+                            <span className="mx-4">Last name: {guest.lastName}</span>
+                            <span className="ml-4">Phone number: {guest.phone}</span>
+                        </h5>
+                        <div>
+                            <Button variant="contained" onClick={handleBack}>
+                                Back
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={sendReservation} className="mx-4">
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                );
                 );
         }
         return (<p>Unknown step</p>);
