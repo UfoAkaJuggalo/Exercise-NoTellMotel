@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {
     Button, FormControl,
-    FormControlLabel, FormHelperText, FormLabel, Input, InputLabel, Radio,
+    FormControlLabel, FormLabel, Input, InputLabel, Radio,
     RadioGroup,
     Step,
     StepContent,
@@ -12,20 +12,22 @@ import {
     Stepper,
     TextField
 } from "@material-ui/core";
-import {AddGuestVM, AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, RoomVM} from "./gen";
+import {
+    AddGuestVM,
+    AddReservationGuestVM,
+    AvailableRoomsForDataRangeVM,
+    OpenAPI,
+    ReservationService,
+    RoomVM
+} from "./gen";
 
-const {postReservationService2} = ReservationService;
+const {postReservationService2, postReservationService1} = ReservationService;
 OpenAPI.BASE = "https://localhost:44360";
-
-interface AvailableRoom {
-    numberOfBedrooms: number,
-    avalibality: number
-}
 
 const App: React.FC = () =>
 {
 
-    const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm'];
+    const steps = ['Date of reservation', 'Choose room type', 'Your details', 'Confirm', 'Success'];
     const [activeStep, setActiveStep] = React.useState(0);
     const [bedroomsNum, setbedroomsNum] = useState<number>(0);
     const [guest, setguest] = useState<AddGuestVM>( (
@@ -75,6 +77,10 @@ const App: React.FC = () =>
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleReset = () => {
+        setActiveStep(0);
     };
 
     const handleDateFromChange = (event: any | null) => {
@@ -149,6 +155,27 @@ const App: React.FC = () =>
         return false;
     }
 
+    const sendReservation = () =>
+    {
+        var reservation: AddReservationGuestVM;
+        const room = availableRooms.find(f => f.numberOfBedrooms == bedroomsNum);
+
+        if (room) {
+            reservation = {
+                roomId: room.roomId,
+                reservationFrom: convertDateToString(dateFrom),
+                reservationTo: convertDateToString(dateTo),
+                name: guest.name,
+                lastName: guest.lastName,
+                phone: guest.phone
+            };
+
+            postReservationService1(reservation)
+                .then(() => handleNext())
+                .catch((err)=> console.log("Error: ", err));
+        }
+    }
+
     const getStepContent = (step: number): JSX.Element =>
     {
         switch (step) {
@@ -159,7 +186,7 @@ const App: React.FC = () =>
                             id="date-from-picker"
                             label="Pick a start date of your reservation"
                             type="date"
-                            className={"form-step1_textFiels mx-4"}
+                            className={"form-step1_textFiels mr-4"}
                             defaultValue={getDateNow(false)}
                             onChange={handleDateFromChange}
                             InputLabelProps={{
@@ -178,7 +205,7 @@ const App: React.FC = () =>
                             }}
                         />
                         <div>
-                            <Button className={"mt-5 ml-4"} variant="contained" color="primary" onClick={checkAvailableRooms}>Check available rooms</Button>
+                            <Button className={"mt-5"} variant="contained" color="primary" onClick={checkAvailableRooms}>Check available rooms</Button>
                         </div>
                     </form>
                 );
@@ -230,7 +257,31 @@ const App: React.FC = () =>
                 );
             case 3:
                 return (
-                    <p>Step 4</p>
+                    <div className="mx-2 mt-2">
+                        <h5>Reservation from: {convertDateToString(dateFrom)} to: {convertDateToString(dateTo)}</h5>
+                        <h5 className="mt-3 mb-4">
+                            <span className="mr-4">First name: {guest.name}</span>
+                            <span className="mx-4">Last name: {guest.lastName}</span>
+                            <span className="ml-4">Phone number: {guest.phone}</span>
+                        </h5>
+                        <div>
+                            <Button variant="contained" onClick={handleBack}>
+                                Back
+                            </Button>
+                            <Button color="primary" variant="contained" onClick={sendReservation} className="mx-4">
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                );
+            case 4:
+                return (
+                    <>
+                        <h4 className="text-center">Success!</h4>
+                        <Button color="primary" variant="contained" onClick={handleReset}>
+                            Reset
+                        </Button>
+                    </>
                 );
         }
         return (<p>Unknown step</p>);
