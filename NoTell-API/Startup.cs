@@ -29,6 +29,8 @@ namespace NoTell_API
 
         public IConfiguration Configuration { get; }
 
+        readonly string allowSpecificOrigins = "_allowSpecificOrigins";
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -39,6 +41,14 @@ namespace NoTell_API
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IReservationService, ReservationService>();
+
+            services.AddCors(opt =>
+                                 opt.AddPolicy(allowSpecificOrigins, builder =>
+                                 {
+                                     builder.WithOrigins(("http://localhost:3000"))
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                                 }));
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -60,6 +70,8 @@ namespace NoTell_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(allowSpecificOrigins);
 
             app.UseAuthorization();
 
