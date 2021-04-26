@@ -17,11 +17,6 @@ import {AddGuestVM, AvailableRoomsForDataRangeVM, OpenAPI, ReservationService, R
 const {postReservationService2} = ReservationService;
 OpenAPI.BASE = "https://localhost:44360";
 
-interface AvailableRoom {
-    numberOfBedrooms: number,
-    avalibality: number
-}
-
 const App: React.FC = () =>
 {
 
@@ -159,7 +154,7 @@ const App: React.FC = () =>
                             id="date-from-picker"
                             label="Pick a start date of your reservation"
                             type="date"
-                            className={"form-step1_textFiels mx-4"}
+                            className={"form-step1_textFiels mr-4"}
                             defaultValue={getDateNow(false)}
                             onChange={handleDateFromChange}
                             InputLabelProps={{
@@ -178,7 +173,7 @@ const App: React.FC = () =>
                             }}
                         />
                         <div>
-                            <Button className={"mt-5 ml-4"} variant="contained" color="primary" onClick={checkAvailableRooms}>Check available rooms</Button>
+                            <Button className={"mt-5"} variant="contained" color="primary" onClick={checkAvailableRooms}>Check available rooms</Button>
                         </div>
                     </form>
                 );
